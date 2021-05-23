@@ -9,7 +9,6 @@ export default function axios(option) {
             baseURL: 'http://47.93.19.109:9999/community',
             timeout: 150000,
         });
-
         // 配置请求和响应拦截
         instance.interceptors.request.use(config => {
             // 1.当发送网络请求时, 在页面中添加一个loading组件, 作为动画

@@ -15,7 +15,7 @@
               <el-image
                 style="width: 50px; height: 50px;border-radius:100%"
                 fit="cover"
-                src="http://img01.yohoboys.com/contentimg/2018/11/22/13/0187be5a52edcdc999f749b9e24c7815fb.jpg"
+                src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=559253646,2303530842&fm=26&gp=0.jpg"
               >
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>

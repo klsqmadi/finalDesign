@@ -3,10 +3,11 @@
     <div class="header">
       <div>我的</div>
     </div>
-    <div @click="$router.push('/personInfo')">
+    <div >
+      <div @click="$router.push('/personInfo')">
       <el-row style="padding:20px;margin-bottom:20px" type="flex">
         <el-col :span="6" style="padding:0 10px">
-          <el-avatar size="large" style="width:60px;height:60px" :src="$store.state.user1.headerUrl"></el-avatar>
+          <el-avatar size="large" style="width:60px;height:60px" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=559253646,2303530842&fm=26&gp=0.jpg"></el-avatar>
         </el-col>
         <el-col :span="14" style="padding-top:4px">
             <div>{{ userName }}</div>
@@ -19,7 +20,7 @@
           style="display:flex;justify-content:center;align-items:center"
           ><i class="el-icon-arrow-right" style="font-size:18px"></i
         ></el-col>
-      </el-row>
+      </el-row></div>
       <el-row style="padding:20px">
         <div @click="$router.push('/publishTask')">
           <el-row type="flex" align="middle" style="margin-bottom:30px">
