@@ -6,39 +6,93 @@
       </div>
       <div>已发布任务</div>
     </div>
-    <el-row style="padding:6px 14px;border-bottom:6px #00000010 solid" v-for="item in task">
-      <el-col :span="24" style="margin-bottom:4px">{{item.title}}</el-col>
-      <el-col style="font-size:14px;margin-bottom:6px;color:#00000080;text-indent:2em">{{item.content}}</el-col>
-      <el-col :span="24"><el-button size="mini" style="float:right" class="clearfix" plain :type="flagStatus(item.status)">{{item.status == 2?'已完成':'待接收'}}</el-button></el-col>
+    <el-row
+      style="padding:6px 14px;border-bottom:6px #00000010 solid"
+      v-for="(item, index) in task" :key="index"
+    >
+      <el-col>
+        <el-col style="margin-bottom:4px">{{ item.title }}</el-col>
+      </el-col>
+      <el-col>
+        <el-col
+          style="font-size:14px;margin-bottom:6px;color:#00000080;text-indent:2em"
+          >{{ item.content }}</el-col
+        >
+      </el-col>
+      <el-col style="display:flex;justify-content: flex-end;margin-top:8px">
+        <div v-if="!item.flagIsDelete && !item.status"
+        style="margin:0 6px"
+          ><el-button
+            size="mini"
+            style="float:right"
+            class="clearfix"
+            plain
+            @click="deleteTask(item.id, index)"
+            >删除任务</el-button
+          ></div
+        >
+        <div  v-if="item.flagIsDelete"
+        style="margin:0 6px"
+          ><el-button
+            size="mini"
+            style="float:right"
+            class="clearfix"
+            plain
+            type="danger"
+            >已删除</el-button
+          ></div
+        >
+        <div v-else
+        style="margin:0 6px"
+          ><el-button
+            size="mini"
+            style="float:right"
+            class="clearfix"
+            plain
+            :type="flagStatus(item.status)"
+            >{{ item.status == 2 ? "已完成" : item.status == 1?'待完成':'待接受' }}</el-button
+          ></div
+        >
+      </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import {getTaskByPost} from '../network/index'
+import { getTaskByPost, deleteTaskReq } from "../network/index";
 export default {
-  data(){
+  data() {
     return {
-      task:[]
-    }
+      task: [],
+    };
   },
-  created(){
-    this.getTask()
+  created() {
+    this.getTask();
   },
-  methods:{
-    flagStatus(status) {
-      return status == 2 ? "info" : "success";
-    },
-    getTask(){
-      const stuNum = this.$store.state.user.stuNumber
-      getTaskByPost(stuNum).then(({code,data,msg})=>{
-        if(code == this.$code){
-          this.task = data
-          console.log(this.task)
+  methods: {
+    deleteTask(taskId, index) {
+      deleteTaskReq(taskId).then((res) => {
+        if (res) {
+          this.task[index].flagIsDelete = 1;
         }
-      })
-    }
-  }
+      });
+    },
+    flagStatus(status) {
+      return status == 2 ? "info" :status == 1?'success':'primary';
+    },
+    getTask() {
+      const stuNum = this.$store.state.user.stuNumber;
+      getTaskByPost(stuNum).then(({ code, data, msg }) => {
+        if (code == this.$code) {
+          console.log('data: ', data);
+          data.forEach(item=>{
+            item.flagIsDelete = 0
+          })
+          this.task = data
+        }
+      });
+    },
+  },
 };
 </script>
 

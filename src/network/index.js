@@ -11,11 +11,25 @@ import {
     API_POST_PUT_CREATE_CIRCLE,
     API_POST_GET_CIRCLE_BY_NAME,
     API_POST_PUT_JOIN_CIRCLE,
-    API_POST_FLAG_JOIN_CIRCLE
+    API_POST_FLAG_JOIN_CIRCLE,
+    API_POST_DELETE_TASK
 } from './config'
 
 import axios from './axios'
 import qs from 'qs'
+
+export function deleteTaskReq(taskId){
+    return axios({
+        url:API_POST_DELETE_TASK,
+        method:'post',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data:qs.stringify({
+            taskId
+        })
+    })
+}
 
 export function isJoinCircleReq(stuNum,circleId){
     return axios({

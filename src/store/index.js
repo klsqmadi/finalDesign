@@ -12,6 +12,12 @@ export default new Vuex.Store({
   mutations: {
     setUser(state,stuNum){
       state.user.stuNumber = stuNum
+    },
+    setUserName(state,name){
+      state.user.name = name
+    },
+    setUserLast(state,user1){
+      state.user1 = user1
     }
   },
   actions: {

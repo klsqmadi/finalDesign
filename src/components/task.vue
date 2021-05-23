@@ -56,7 +56,7 @@ export default {
     },
     methods:{
         confirm(){
-            const content = `${this.form.address}-${this.form.address}-${this.form.phone}-${this.form.details}`
+            const content = `送达地点:${this.form.address}-截止时间:${this.form.time}-联系方式:${this.form.phone}-${this.form.details}`
             putAddTask(this.circleId,content,this.form.title,this.stuNumber).then((res)=>{
                 if(res == this.$code){
                     this.$router.go(-1)

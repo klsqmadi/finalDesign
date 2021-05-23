@@ -15,7 +15,7 @@
               <el-image
                 style="width: 50px; height: 50px;border-radius:100%"
                 fit="cover"
-                src="https://lh3.googleusercontent.com/proxy/3xt2_3dem1QSYrj5WFB8QfDvwF-viwR9rOE6wlfIA6MuaHVKR7K5azCXCTHatgHoaTMXXsSwEMq8A0T_tU47YwrOpAT6nMJFacrAKsqrJWjIHyYKlLhOK7xtpw"
+                src="http://img01.yohoboys.com/contentimg/2018/11/22/13/0187be5a52edcdc999f749b9e24c7815fb.jpg"
               >
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
@@ -62,7 +62,10 @@ export default {
     }
   },
   created(){
+  },
+  mounted(){
     this.getCircleListReq()
+
   }
   
 };

@@ -11,5 +11,6 @@ module.exports = {
     API_POST_PUT_CREATE_CIRCLE:'/circle/createCircle',
     API_POST_GET_CIRCLE_BY_NAME:'/circle/searchCircleByName',
     API_POST_PUT_JOIN_CIRCLE:'/circle/addCircle',
-    API_POST_FLAG_JOIN_CIRCLE:'/circle/getUserCircle'
+    API_POST_FLAG_JOIN_CIRCLE:'/circle/getUserCircle',
+    API_POST_DELETE_TASK:'/task/deleteTask'
 }

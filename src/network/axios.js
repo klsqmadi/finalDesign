@@ -5,7 +5,7 @@ export default function axios(option) {
         // 1.创建axios的实例
         const instance = originAxios.create({
             withCredentials: true,
-            // baseURL: 'http://192.168.1.111:9999/community',
+            // baseURL: 'http://192.168.1.101:9999/community',
             baseURL: 'http://47.93.19.109:9999/community',
             timeout: 150000,
         });

@@ -61,7 +61,7 @@
       <div v-if="!isShowLoginPage">
         <el-row type="flex" style="margin-top:10px;padding:4px 6px">
           <el-col :span="8" class="inputTag">
-            <div style="padding:0 10px"><i class="el-icon-user"></i></div>
+            <div style="padding:0 10px"><i class="el-icon-user-solid"></i></div>
             <div><span>用户名</span></div>
           </el-col>
           <el-col>
@@ -74,7 +74,7 @@
         </el-row>
         <el-row type="flex" style="margin-top:2px;padding:4px 6px">
           <el-col :span="8" class="inputTag">
-            <div style="padding:0 10px"><i class="el-icon-key"></i></div>
+            <div style="padding:0 10px"><i class="el-icon-s-goods"></i></div>
             <div><span>密码</span></div>
           </el-col>
           <el-col>
@@ -88,26 +88,26 @@
 
         <el-row type="flex" style="margin-top:2px;padding:4px 6px">
           <el-col :span="8" class="inputTag">
-            <div style="padding:0 10px"><i class="el-icon-key"></i></div>
+            <div style="padding:0 10px"><i class="el-icon-s-flag"></i></div>
             <div><span>学号</span></div>
           </el-col>
           <el-col>
             <el-input
               placeholder="请输入学号"
-              show-password
+              clearable
               v-model="register.stuNumber"
             ></el-input>
           </el-col>
         </el-row>
         <el-row type="flex" style="margin-top:2px;padding:4px 6px">
           <el-col :span="8" class="inputTag">
-            <div style="padding:0 10px"><i class="el-icon-key"></i></div>
+            <div style="padding:0 10px"><i class="el-icon-phone"></i></div>
             <div><span>手机号码</span></div>
           </el-col>
           <el-col>
             <el-input
               placeholder="请输入手机号码"
-              show-password
+              clearable
               v-model="register.phone"
             ></el-input>
           </el-col>
@@ -172,10 +172,11 @@ export default {
     loginReq() {
       loginReq(this.loginStuNum,this.loginPassword).then(({code,data,msg}) => {
         if(code == this.$code){
-          this.$store.commit('setUser',this.loginStuNum)
+          this.$store.commit('setUser',data.studentNumber)
+          this.$store.commit('setUserName',data.username)
+          this.$store.commit('setUserLast',data)
           this.$router.push('/home')
         }else{
-          console.log(1)
           this.$message(msg)
         }
       });

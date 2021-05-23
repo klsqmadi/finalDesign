@@ -28,7 +28,7 @@ export default {
                         path:'/circle',
                         query:{
                             id:data[0].id,
-                            circleName:this.input
+                            circleName:data[0].name
                         }
                     })
                 }

@@ -10,6 +10,7 @@ import publishTask from '../components/pubilshTask.vue'
 import acceptTask from '../components/acceptTask.vue'
 import createCircle from '../components/createCircle.vue'
 import searchCircle from '../components/searchCircle.vue'
+import personInfo from '../components/personInfo.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -63,12 +64,15 @@ const routes = [{
     path:'/searchCircle',
     name:'searchCircle',
     component:searchCircle
+  },
+  {
+    path:'/personInfo',
+    name:'personInfo',
+    component:personInfo
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
   routes
 })
 
