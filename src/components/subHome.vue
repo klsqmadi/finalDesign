@@ -3,71 +3,88 @@
     <div class="header">
       <div class="title">主页</div>
       <div class="btn">
-        <i class="el-icon-search" style="margin:0 10px" @click="$router.push('/searchCircle')"></i>
-        <i class="el-icon-circle-plus-outline" @click="$router.push('/createCircle')"></i>
+        <i
+          class="el-icon-search"
+          style="margin:0 10px"
+          @click="$router.push('/searchCircle')"
+        ></i>
+        <i
+          class="el-icon-circle-plus-outline"
+          @click="$router.push('/task')"
+        ></i>
       </div>
     </div>
-    <div>
-      <el-card :body-style="{ padding: '0px' }" v-for="(item,index) in circle" :key="index">
-        <div @click="goToDetail(item.id,item.name)">
-          <el-row type="flex" style="height:70px;padding:0 20px" align="middle">
-            <el-col :span="6" class="image">
-              <el-image
-                style="width: 50px; height: 50px;border-radius:100%"
-                fit="cover"
-                src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=559253646,2303530842&fm=26&gp=0.jpg"
-              >
-                <div slot="error" class="image-slot">
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>
-            </el-col>
-            <el-col>
-              <span style="color:#303133">{{item.name}}</span>
-            </el-col>
-          </el-row>
-        </div></el-card
-      >
+    <div v-if="task.length !== 0" class="bg-gray-400">
+      <task-list :task="task"></task-list>
     </div>
+    <el-empty v-else description="附近暂无任务"></el-empty>
   </div>
 </template>
 
 <script>
-import {getCircleListReq} from '../network/index'
+import taskList from './taskList.vue'
+import { getCircleListReq, getSearchTaskReq, receiveTask } from "../network/index";
 export default {
-  data(){
-    return{
-      circle:[]
-    }
+  components: {
+    taskList
+  },
+  data() {
+    return {
+      task: [],
+    };
   },
   methods: {
-    goToDetail(id,circleName) {
+    goToDetail(id, circleName) {
       this.$router.push({
-        path:'/circle',
-        query:{
+        path: "/circle",
+        query: {
           id,
-          circleName
-        }
+          circleName,
+        },
       });
     },
-    getCircleListReq(){
-      getCircleListReq(this.$store.state.user.stuNumber).then(({code,data})=>{
-        console.log(this.$code == code,'----------------')
-        if(code == this.$code){
-          this.circle = data
-          console.log(this.circle)
-          console.log(data)
+    accept(item) {
+      console.log('item: ', item);
+      receiveTask({ taskId: item.tid }).then(({ code, data, message }) => {
+        if(code == this.$code) {
+          item.accept = true
+        } else {
+          this.$message(message)
         }
       })
-    }
-  },
-  created(){
-  },
-  mounted(){
-    this.getCircleListReq()
+    },
+    // getCircleListReq(){
+    //   getCircleListReq(this.$store.state.user.stuNumber).then(({code,data})=>{
+    //     console.log(this.$code == code,'----------------')
+    //     if(code == this.$code){
+    //       this.circle = data
+    //       console.log(this.circle)
+    //       console.log(data)
+    //     }
+    //   })
+    // }
+    getSearchTask() {
 
-  }
-  
+      window.navigator.geolocation.getCurrentPosition(({coords}) => {
+        let { latitude, longitude } = coords
+        this.$store.commit('setLL', {latitude, longitude})
+        console.log('latitude, longitude: ', latitude, longitude);
+        getSearchTaskReq({latitude: latitude.toFixed(6), longitude: longitude.toFixed(6)}).then(({code, message, data}) => {
+          if(code == this.$code) {
+            this.task = data.map(item => ({...item, accept: false}))
+          } else {
+            this.$message(message)
+          }
+        })
+      });
+    },
+  },
+  created() {
+    this.getSearchTask()
+  },
+  mounted() {
+    // this.getCircleListReq()
+  },
 };
 </script>
 

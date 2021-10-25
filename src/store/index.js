@@ -7,9 +7,20 @@ export default new Vuex.Store({
   state: {
     user:{
       stuNumber:'',
-    }
+    },
+    token: '',
+    latitude: '',
+    longitude: ''
   },
   mutations: {
+    setLL(state, obj) {
+      let { latitude, longitude} = obj
+      state.latitude = latitude
+      state.longitude = longitude
+    },
+    token(state, token) {
+      state.token = token
+    },
     setUser(state,stuNum){
       state.user.stuNumber = stuNum
     },

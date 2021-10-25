@@ -40,7 +40,7 @@ export default {
             createCircle(this.form.name,stuNumber).then(res=>{
                 if(res){
                     this.$router.back(-1)
-                }
+                } 
             })
         }
     }

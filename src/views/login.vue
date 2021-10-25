@@ -89,11 +89,11 @@
         <el-row type="flex" style="margin-top:2px;padding:4px 6px">
           <el-col :span="8" class="inputTag">
             <div style="padding:0 10px"><i class="el-icon-s-flag"></i></div>
-            <div><span>学号</span></div>
+            <div><span>重复密码</span></div>
           </el-col>
           <el-col>
             <el-input
-              placeholder="请输入学号"
+              placeholder="请确认密码"
               clearable
               v-model="register.stuNumber"
             ></el-input>
@@ -135,7 +135,7 @@
   </div>
 </template>
 <script>
-import { registerReq, loginReq } from "../network/index.js";
+import { registerReq, loginReq, register} from "../network/index.js";
 export default {
   name: "Home",
   data() {
@@ -153,15 +153,28 @@ export default {
   },
   methods: {
     registerReq() {
-      const register = this.register;
-      const { name, password, phone, stuNumber } = register;
-      registerReq(password.toString(), phone.toString(), password.toString(), stuNumber.toString(), name.toString()).then(({code,data,msg}) => {
-        if(code == this.$code){
+      let { name:nick, password, stuNumber: password2, phone: telephoneNumber } = this.register
+      register({ nick, password, password2, telephoneNumber }).then(({ code, message, data }) => {
+        if(code == this.$code) {
+          this.$message({
+            message: '注册成功',
+            type: 'success'
+          })
           this.isShowLoginPage = !this.isShowLoginPage
-        }else{
-          this.$message(msg)
+          window.localStorage.setItem('token', '')
+        } else {
+          this.$message(message)
         }
-      });
+      })
+      // const register = this.register;
+      // const { name, password, phone, stuNumber } = register;
+      // registerReq(password.toString(), phone.toString(), password.toString(), stuNumber.toString(), name.toString()).then(({code,data,msg}) => {
+      //   if(code == this.$code){
+      //     this.isShowLoginPage = !this.isShowLoginPage
+      //   }else{
+      //     this.$message(msg)
+      //   }
+      // });
       // registerReq(18102857367,18102857367,18102857367,3119004823,18102857367).then(res=>{
       //   console.log(res)
       // })
@@ -170,14 +183,17 @@ export default {
       // })
     },
     loginReq() {
-      loginReq(this.loginStuNum,this.loginPassword).then(({code,data,msg}) => {
+      loginReq(this.loginStuNum,this.loginPassword).then(({code, data , message}) => {
         if(code == this.$code){
-          this.$store.commit('setUser',data.studentNumber)
-          this.$store.commit('setUserName',data.username)
-          this.$store.commit('setUserLast',data)
+          window.localStorage.setItem('token', data.jwtToken)
+          window.localStorage.setItem('userId', data.userId)
+          // this.$store.commit('token', data.jwtToken)
+          // this.$store.commit('setUser',data.studentNumber)
+          // this.$store.commit('setUserName',data.username)
+          // this.$store.commit('setUserLast',data)
           this.$router.push('/home')
         }else{
-          this.$message(msg)
+          this.$message(message)
         }
       });
     },

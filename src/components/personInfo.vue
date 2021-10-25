@@ -20,10 +20,10 @@
         <el-input
           v-if="isEdit"
           style="max-width:60%"
-          v-model="tempUserName"
+          v-model="tempNick"
           placeholder="请输入用户名"
         ></el-input>
-        <div class="info" v-if="!isEdit">{{ username }}</div>
+        <div class="info" v-else>{{ info.nick }}</div>
       </div>
       <div class="divider"></div>
       <div class="show">
@@ -40,7 +40,7 @@
           v-model="tempPhone"
           placeholder="请输入手机号码"
         ></el-input>
-        <div class="info" v-else>{{ phone }}</div>
+        <div class="info" v-else>{{ info.telephoneNumber }}</div>
       </div>
       <div class="divider"></div>
       <div class="show">
@@ -49,15 +49,31 @@
             class="el-icon-s-goods"
             style="font-size:30px;color:#E6A23C;margin-right:5px"
           ></span>
-          <span>学号</span>
+          <span>余额</span>
         </div>
-        <el-input
-          v-if="isEdit"
-          style="max-width:60%;"
-          v-model="tempStuNumber"
-          placeholder="请输入学号"
-        ></el-input>
-        <div class="info" v-else>{{ studentNumber }}</div>
+        <div class="info" >{{ info.balance }}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="show">
+        <div class="label">
+          <span
+            class="el-icon-medal-1"
+            style="font-size:30px;color:#8e44ad;margin-right:5px"
+          ></span>
+          <span>已发布任务数量</span>
+        </div>
+        <div class="info" >{{ info.publishTaskNumber }}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="show">
+        <div class="label">
+          <span
+            class="el-icon-lollipop"
+            style="font-size:30px;color:#F56C6C;margin-right:5px"
+          ></span>
+          <span>已接受任务数量</span>
+        </div>
+        <div class="info" >{{ info.receiveTaskNumber }}</div>
       </div>
     </div>
     <transition name="el-zoom-in-center">
@@ -65,43 +81,61 @@
         v-if="isEdit"
         style="display:flex;justify-content:center;margin-top:30px"
       >
-        <el-button style="width:90%" type="success">确定修改</el-button>
+        <el-button style="width:90%" type="success" @click="confirm">确定修改</el-button>
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import { getUserById, updateInfo } from '../network/index'
 export default {
   data() {
     return {
-      phone: "",
-      studentNumber: "",
-      username: "",
       isEdit: false,
+      info: {
+        telephoneNumber: "",
+        balance: "",
+        nick: "",
+        publishTaskNumber: 0,
+        receiveTaskNumber: 0
+      },
+      tempNick: "",
       tempPhone: "",
-      tempStuNumber: "",
-      tempUserName: "",
     };
   },
   methods: {
     getEditValue() {
       this.isEdit = true;
-      this.tempPhone = this.phone;
-      this.tempStuNumber = this.studentNumber;
-      this.tempUserName = this.username;
+      let { nick, telephoneNumber } = this.info
+      this.tempNick = nick
+      this.tempPhone = telephoneNumber
     },
     confirm() {
-      this.phone = this.tempPhone;
-      this.studentNumber = this.tempStuNumber;
-      this.username = this.tempUserName;
-      this.isEdit = false;
+      let { nick, telephoneNumber } = this.info
+      updateInfo({nick, telephoneNumber}).then(({ code, message, data }) => {
+        let { tempNick, tempPhone } = this
+        this.info.nick = tempNick
+        this.info.telephoneNumber = tempPhone
+        this.isEdit = false;
+      }).catch((err) => {
+        this.$message(err)
+      })
     },
   },
   created() {
-    this.phone = this.$store.state.user1.phone;
-    this.studentNumber = this.$store.state.user1.studentNumber;
-    this.username = this.$store.state.user1.username;
+    getUserById({id: window.localStorage.getItem('userId')}).then(({ code, message, data }) => {
+      if(code == this.$code) {
+        this.info = data
+      } else {
+        throw message
+      }
+    }).catch((err) => {
+      this.$message(err)
+    })
+    // this.phone = this.$store.state.user1.phone;
+    // this.studentNumber = this.$store.state.user1.studentNumber;
+    // this.username = this.$store.state.user1.username;
   },
 };
 </script>

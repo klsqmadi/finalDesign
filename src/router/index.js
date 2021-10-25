@@ -11,6 +11,8 @@ import acceptTask from '../components/acceptTask.vue'
 import createCircle from '../components/createCircle.vue'
 import searchCircle from '../components/searchCircle.vue'
 import personInfo from '../components/personInfo.vue'
+import taskDetail from '../components/taskDetail.vue'
+import chat from '../components/chat.vue'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -69,6 +71,16 @@ const routes = [{
     path:'/personInfo',
     name:'personInfo',
     component:personInfo
+  },
+  {
+    path:'/taskDetail',
+    name:'taskDetail',
+    component:taskDetail
+  },
+  {
+    path:'/chat/',
+    name:'chat',
+    component: chat,
   }
 ]
 

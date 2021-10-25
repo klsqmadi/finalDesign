@@ -6,7 +6,10 @@
       </div>
       <div>已发布任务</div>
     </div>
-    <el-row
+    <div>
+      <task-list :task="task"></task-list>
+    </div>
+    <!-- <el-row
       style="padding:6px 14px;border-bottom:6px #00000010 solid"
       v-for="(item, index) in task" :key="index"
     >
@@ -54,13 +57,17 @@
           ></div
         >
       </el-col>
-    </el-row>
+    </el-row> -->
   </div>
 </template>
 
 <script>
-import { getTaskByPost, deleteTaskReq } from "../network/index";
+import taskList from './taskList.vue'
+import { getTaskByPost, deleteTaskReq, getTask1 } from "../network/index";
 export default {
+  components: {
+    taskList
+  },
   data() {
     return {
       task: [],
@@ -70,28 +77,42 @@ export default {
     this.getTask();
   },
   methods: {
-    deleteTask(taskId, index) {
-      deleteTaskReq(taskId).then((res) => {
-        if (res) {
-          this.task[index].flagIsDelete = 1;
-        }
-      });
-    },
-    flagStatus(status) {
-      return status == 2 ? "info" :status == 1?'success':'primary';
-    },
     getTask() {
-      const stuNum = this.$store.state.user.stuNumber;
-      getTaskByPost(stuNum).then(({ code, data, msg }) => {
-        if (code == this.$code) {
-          console.log('data: ', data);
-          data.forEach(item=>{
-            item.flagIsDelete = 0
-          })
-          this.task = data
-        }
-      });
+      let that = this
+      getTask1()
+        .then(({ code, data, message }) => {
+          if (code == this.$code) {
+            this.task = data;
+          } else {
+            throw message;
+          }
+        })
+        .catch((err) => {
+          that.$message(err);
+        });
     },
+    // deleteTask(taskId, index) {
+    //   deleteTaskReq(taskId).then((res) => {
+    //     if (res) {
+    //       this.task[index].flagIsDelete = 1;
+    //     }
+    //   });
+    // },
+    // flagStatus(status) {
+    //   return status == 2 ? "info" :status == 1?'success':'primary';
+    // },
+    // getTask() {
+    //   const stuNum = this.$store.state.user.stuNumber;
+    //   getTaskByPost(stuNum).then(({ code, data, msg }) => {
+    //     if (code == this.$code) {
+    //       console.log('data: ', data);
+    //       data.forEach(item=>{
+    //         item.flagIsDelete = 0
+    //       })
+    //       this.task = data
+    //     }
+    //   });
+    // },
   },
 };
 </script>

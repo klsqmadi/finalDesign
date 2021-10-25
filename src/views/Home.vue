@@ -2,7 +2,7 @@
   <div id="container">
     <div class="content">
       <keep-alive>
-      <router-view></router-view>
+        <router-view></router-view>
       </keep-alive>
     </div>
     <el-row type="flex" id="footer">
@@ -54,7 +54,7 @@ export default {
 #container {
   height: 100vh;
   #footer {
-      box-sizing: border-box;
+    box-sizing: border-box;
     height: 5vh;
     width: 100vw;
     position: fixed;
@@ -81,10 +81,10 @@ export default {
       }
     }
   }
-  .content{
-      height: 91vh;
-      background: #ffffff;
-      overflow: auto;
+  .content {
+    height: 91vh;
+    background: #ffffff;
+    overflow: auto;
   }
 }
 </style>

@@ -1,16 +1,22 @@
 import originAxios from 'axios'
-
 export default function axios(option) {
     return new Promise((resolve, reject) => {
         // 1.创建axios的实例
         const instance = originAxios.create({
-            withCredentials: true,
+            // withCredentials: true,
             // baseURL: 'http://192.168.1.101:9999/community',
-            baseURL: 'http://47.93.19.109:9999/community',
+            // baseURL: '/help',
+            // baseURL: 'http://10.33.222.130:8080',
+            baseURL: 'http://192.168.1.102:8080',
+            // baseURL: '',
             timeout: 150000,
         });
         // 配置请求和响应拦截
         instance.interceptors.request.use(config => {
+            config.headers = {
+                'Content-Type': 'application/json'
+            }
+            config.headers.Authorization = window.localStorage.getItem('token') || ''
             // 1.当发送网络请求时, 在页面中添加一个loading组件, 作为动画
             // 2.某些请求要求用户必须登录, 判断用户是否有token, 如果没有token跳转到login页面
             // const token = localStorage.getItem('takeAwayManage_TOKEN') || null
@@ -48,8 +54,19 @@ export default function axios(option) {
         instance(option).then(res => {
             resolve(res)
         }).catch(err => {
+            console.log('axios', '统一报错')
             // requestErrorTip()
             reject(err)
         })
+
+
+
+
+
+
+
+
+
+
     })
 }

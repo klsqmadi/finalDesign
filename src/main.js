@@ -7,9 +7,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.config.productionTip = false
 Vue.use(ElementUI);
-Vue.prototype.$code = 1
+Vue.prototype.$code = 500000
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
