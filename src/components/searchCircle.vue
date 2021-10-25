@@ -22,6 +22,12 @@
       <div
         v-for="item in user"
         class="flex p-4 mb-5 mx-1 shadow-md bg-blue-200 items-center rounded-lg"
+        @click="
+          $router.push({
+            name: 'chat',
+            query: { nick: item.nick, fromId: userId, toId: item.uid },
+          })
+        "
       >
         <el-avatar class="mx-2 mt-2" :src="item.picture"></el-avatar>
         <div class="text-lg ml-2">{{ item.nick }}</div>
@@ -37,7 +43,11 @@ export default {
     return {
       input: "",
       user: [],
+      userId: ''
     };
+  },
+  created() {
+    this.userId = window.localStorage.getItem('userId')
   },
   methods: {
     search() {
